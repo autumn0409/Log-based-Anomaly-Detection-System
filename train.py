@@ -1,6 +1,6 @@
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Bidirectional
-from keras_self_attention import SeqWeightedAttention
+from Attention import Attention
 
 
 # hyper-parameters
@@ -15,7 +15,7 @@ rnn_units = 32
 model = Sequential()
 model.add(Bidirectional(LSTM(rnn_units, return_sequences=True),
                         input_shape=(timesteps, vec_len)))
-model.add(SeqWeightedAttention())
+model.add(Attention(bias=False))
 model.add(Dense(2, activation='softmax'))
 model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop', metrics=['accuracy'])
@@ -25,4 +25,4 @@ print(model.summary())
 # train
 # model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
 
-# model.save('my_model.h5')
+model.save('my_model.h5')
