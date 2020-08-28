@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+from tqdm import tqdm
 
 from utils import template2vec
 
@@ -26,7 +27,7 @@ df_template['Vector'] = eventid_vectors
 
 # convert templates to vectors for all logs
 vector_structured = []
-for template in df_structured['EventTemplate']:
+for template in tqdm(df_structured['EventTemplate']):
     try:
         vector_structured.append(
             df_template.loc[df_template['EventTemplate'] == template, 'Vector'][0])
