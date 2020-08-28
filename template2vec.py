@@ -18,11 +18,7 @@ with open('preprocessed_data/embedding_table.pkl', 'rb') as inputfile:
 
 
 # calculate vectors for all known templates
-eventid_vectors = []
-for event_id, template, occurrences in df_template.iloc:
-    eventid_vectors.append(
-        ' '.join(map(str, template2vec([template], embedding_table, counter_idf)[0])))
-df_template['Vector'] = eventid_vectors
+df_template['Vector'] = template2vec(df_template['EventTemplate'].tolist(), embedding_table, counter_idf)
 
 
 # convert templates to vectors for all logs
@@ -33,7 +29,6 @@ for template in tqdm(df_structured['EventTemplate']):
             df_template.loc[df_template['EventTemplate'] == template, 'Vector'][0])
     except Exception:
         # new template
-        vector_structured.append(
-            ' '.join(map(str, template2vec([template], embedding_table, counter_idf)[0])))
+        vector_structured.append(template2vec([template], embedding_table, counter_idf)[0])
 df_structured['Vector'] = vector_structured
 df_structured.to_csv('preprocessed_data/' + structured_file_name, index=False)
