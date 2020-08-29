@@ -1,28 +1,45 @@
+import numpy as np
 from keras.models import Sequential
-from keras.layers import LSTM, Dense, Bidirectional
+from keras.layers import LSTM, Dense, Bidirectional, Masking
+from keras.preprocessing.sequence import pad_sequences
+
 from Attention import Attention
+from utils import precision_m, recall_m, f1_m
 
 
 # hyper-parameters
-batch_size = 16
+batch_size = 64
 epochs = 20
-
-timesteps = 20
-vec_len = 300
 rnn_units = 32
+
+
+# load data
+training_data = np.load(
+    'preprocessed_data/training_data.npz', allow_pickle=True)
+x_train = training_data['x_train']
+y_train = training_data['y_train']
+
+
+# padding
+x_train = [i.tolist() for i in x_train]
+x_train = pad_sequences(x_train, padding='post', dtype='float32')
+x_train = np.array(x_train)
+
 
 # model
 model = Sequential()
-model.add(Bidirectional(LSTM(rnn_units, return_sequences=True),
-                        input_shape=(timesteps, vec_len)))
+model.add(Masking(mask_value=0., input_shape=(None, x_train.shape[2])))
+model.add(Bidirectional(LSTM(rnn_units, return_sequences=True)))
 model.add(Attention(bias=False))
-model.add(Dense(2, activation='softmax'))
-model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop', metrics=['accuracy'])
+model.add(Dense(2, activation='sigmoid'))
+model.compile(loss='binary_crossentropy', optimizer='rmsprop',
+              metrics=['acc', f1_m, precision_m, recall_m])
 print(model.summary())
 
 
 # train
-# model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
+model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
 
+
+# save model
 model.save('my_model.h5')

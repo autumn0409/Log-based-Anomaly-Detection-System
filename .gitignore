@@ -1,4 +1,4 @@
-*.ipynb
+playground.ipynb
 *.ipynb_checkpoints
 .vscode
 __pycache__
@@ -10,3 +10,4 @@ embedding_table.pkl
 counter_idf.pkl
 *.npy
 *.npz
+*.h5

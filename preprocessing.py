@@ -18,6 +18,7 @@ df_structured.drop(columns=['Date', 'Time', 'Pid', 'Level', 'Component',
 
 # append vectors
 df_structured['Vector'] = vectors
+del vectors
 
 
 # extract BlockId
@@ -82,7 +83,7 @@ while len(df_train) > 0:
         last_index += 1
 
     df_blk = df_train[:last_index]
-    x_train.append(np.array(df_blk['Vector']))
+    x_train.append(np.array(df_blk['Vector'].tolist()))
 
     y_index = int(df_blk.iloc[0]['Label'] == 'Anomaly')
     y = [0, 0]
@@ -110,7 +111,7 @@ while len(df_test) > 0:
         last_index += 1
 
     df_blk = df_test[:last_index]
-    x_test.append(np.array(df_blk['Vector']))
+    x_test.append(np.array(df_blk['Vector'].tolist()))
 
     y_index = int(df_blk.iloc[0]['Label'] == 'Anomaly')
     y = [0, 0]
