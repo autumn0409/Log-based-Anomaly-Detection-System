@@ -4,7 +4,6 @@ from keras.layers import LSTM, Dense, Bidirectional, Masking
 from keras.preprocessing.sequence import pad_sequences
 
 from Attention import Attention
-from utils import precision_m, recall_m, f1_m
 
 
 # hyper-parameters
@@ -32,8 +31,7 @@ model.add(Masking(mask_value=0., input_shape=(None, x_train.shape[2])))
 model.add(Bidirectional(LSTM(rnn_units, return_sequences=True)))
 model.add(Attention(bias=False))
 model.add(Dense(2, activation='sigmoid'))
-model.compile(loss='binary_crossentropy', optimizer='rmsprop',
-              metrics=['acc', f1_m, precision_m, recall_m])
+model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['acc'])
 print(model.summary())
 
 
