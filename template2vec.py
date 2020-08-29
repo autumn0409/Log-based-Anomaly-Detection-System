@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import pickle
 from tqdm import tqdm
 
@@ -10,7 +11,7 @@ structured_file_name = 'HDFS.log_structured.csv'
 
 # load data
 df_template = pd.read_csv('parse_result/' + template_file_name)
-df_structured = pd.read_csv('parse_result/' + structured_file_name, dtype=str)
+df_structured = pd.read_csv('parse_result/' + structured_file_name)
 with open('preprocessed_data/counter_idf.pkl', 'rb') as inputfile:
     counter_idf = pickle.load(inputfile)
 with open('preprocessed_data/embedding_table.pkl', 'rb') as inputfile:
@@ -30,5 +31,5 @@ for template in tqdm(df_structured['EventTemplate']):
     except Exception:
         # new template
         vector_structured.append(template2vec([template], embedding_table, counter_idf)[0])
-df_structured['Vector'] = vector_structured
-df_structured.to_csv('preprocessed_data/' + structured_file_name, index=False)
+
+np.save('preprocessed_data/vectors.npy', vector_structured)

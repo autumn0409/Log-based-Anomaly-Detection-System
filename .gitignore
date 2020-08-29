@@ -8,3 +8,5 @@ anomaly_label.csv
 crawl-300d-2M.vec
 embedding_table.pkl
 counter_idf.pkl
+*.npy
+*.npz
