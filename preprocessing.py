@@ -47,13 +47,16 @@ df_structured.drop(columns=['ParameterList'], axis=1, inplace=True)
 
 
 # split training and testing data labels
-df_label['Usage'] = 'testing'
+df_label['Usage'] = 'rest'
 
 n_index = df_label.Label[df_label.Label.eq('Normal')].sample(6000).index
 a_index = df_label.Label[df_label.Label.eq('Anomaly')].sample(6000).index
 train_index = n_index.union(a_index)
-
 df_label.iloc[train_index, df_label.columns.get_loc('Usage')] = 'training'
+
+test_index = df_label.Usage[df_label.Usage.eq('rest')].sample(
+    int((len(df_label) - 12000) * 0.25)).index
+df_label.iloc[test_index, df_label.columns.get_loc('Usage')] = 'testing'
 
 df_structured = pd.merge(df_structured, df_label, on='BlockId')
 del df_label
@@ -72,7 +75,9 @@ del df_structured
 
 # training data preprocessing
 x_train, y_train = [], []
-pbar = tqdm(total=df_train['BlockId'].nunique(), desc='training data')
+max_timesteps = 0
+pbar = tqdm(total=df_train['BlockId'].nunique(),
+            desc='training data collection')
 
 while len(df_train) > 0:
     blk_id = df_train.iloc[0]['BlockId']
@@ -84,23 +89,41 @@ while len(df_train) > 0:
 
     df_blk = df_train[:last_index]
     x_train.append(np.array(df_blk['Vector'].tolist()))
+    if max_timesteps < x_train[-1].shape[0]:
+        max_timesteps = x_train[-1].shape[0]
 
     y_index = int(df_blk.iloc[0]['Label'] == 'Anomaly')
     y = [0, 0]
     y[y_index] = 1
-    y_train.append(np.array(y))
+    y_train.append(y)
 
     df_train = df_train.iloc[last_index:]
     pbar.update()
 pbar.close()
 
+# padding
+x = []
+pbar = tqdm(total=len(x_train), desc='padding zeros')
+while len(x_train) > 0:
+    x.append(x_train[0].astype(np.float32))
+    del x_train[0]
+
+    x[-1] = np.vstack((x[-1], np.zeros((max_timesteps -
+                                        x[-1].shape[0], 300), dtype=np.float32)))
+
+    pbar.update()
+pbar.close()
+
+
 np.savez('preprocessed_data/training_data.npz',
-         x_train=x_train, y_train=y_train)
+         x_train=x, y_train=y_train)
+del x, y_train
 
 
 # testing data preprocessing
 x_test, y_test = [], []
-pbar = tqdm(total=df_test['BlockId'].nunique(), desc='testing data')
+max_timesteps = 0
+pbar = tqdm(total=df_test['BlockId'].nunique(), desc='testing data collection')
 
 while len(df_test) > 0:
     blk_id = df_test.iloc[0]['BlockId']
@@ -112,15 +135,32 @@ while len(df_test) > 0:
 
     df_blk = df_test[:last_index]
     x_test.append(np.array(df_blk['Vector'].tolist()))
+    if max_timesteps < x_test[-1].shape[0]:
+        max_timesteps = x_test[-1].shape[0]
 
     y_index = int(df_blk.iloc[0]['Label'] == 'Anomaly')
     y = [0, 0]
     y[y_index] = 1
-    y_test.append(np.array(y))
+    y_test.append(y)
 
     df_test = df_test.iloc[last_index:]
     pbar.update()
 pbar.close()
 
+
+# padding
+x = []
+pbar = tqdm(total=len(x_test), desc='padding zeros')
+while len(x_test) > 0:
+    x.append(x_test[0].astype(np.float32))
+    del x_test[0]
+
+    x[-1] = np.vstack((x[-1], np.zeros((max_timesteps -
+                                        x[-1].shape[0], 300), dtype=np.float32)))
+
+    pbar.update()
+pbar.close()
+
+
 np.savez('preprocessed_data/testing_data.npz',
-         x_test=x_test, y_test=y_test)
+         x_test=x, y_test=y_test)

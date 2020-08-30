@@ -1,7 +1,6 @@
 import numpy as np
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Bidirectional, Masking
-from keras.preprocessing.sequence import pad_sequences
 
 from Attention import Attention
 
@@ -13,16 +12,10 @@ rnn_units = 32
 
 
 # load data
-training_data = np.load(
-    'preprocessed_data/training_data.npz', allow_pickle=True)
+training_data = np.load('preprocessed_data/training_data.npz')
 x_train = training_data['x_train']
 y_train = training_data['y_train']
-
-
-# padding
-x_train = [i.tolist() for i in x_train]
-x_train = pad_sequences(x_train, padding='post', dtype='float32')
-x_train = np.array(x_train)
+del training_data
 
 
 # model

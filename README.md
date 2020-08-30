@@ -12,4 +12,4 @@
 * training: randomly select
     - 6,000 anomaly blocks
     - 6,000 normal blocks
-* testing: randomly select 10% blocks from rest data
+* testing: randomly select 25% blocks from rest data
