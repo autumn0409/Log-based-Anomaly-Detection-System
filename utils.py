@@ -3,6 +3,8 @@ import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import stopwords
 import numpy as np
+import keras
+from keras.preprocessing.sequence import pad_sequences
 
 
 EMBEDDING_DIM = 300
@@ -85,7 +87,8 @@ def template2vec(templates, embedding_table, counter_idf):
             num_valid_token += 1
 
             tf = counter_tf[token] / sum(counter_tf.values())
-            idf = np.log(counter_idf['__num_lines__'] / (1 + counter_idf.get(token, 0)))
+            idf = np.log(counter_idf['__num_lines__'] /
+                         (1 + counter_idf.get(token, 0)))
 
             vector = embedding_table[token] * tf * idf
             vector_token += vector
@@ -93,3 +96,32 @@ def template2vec(templates, embedding_table, counter_idf):
         list_vectors.append(vector_token / num_valid_token)
 
     return list_vectors
+
+
+class DataGenerator(keras.utils.Sequence):
+    def __init__(self, x, y, batch_size):
+        'Initialization'
+        self.x = x
+        self.y = y
+        self.batch_size = batch_size
+        self.batch_num = self.__len__()
+
+    def __len__(self):
+        'Denotes the number of batches'
+        return int(np.ceil(len(self.x) / self.batch_size))
+
+    def __getitem__(self, index):
+        'Generate one batch of data'
+        x = y = None
+
+        if index == (self.batch_num - 1):
+            x = self.x[index * self.batch_size:]
+            y = self.y[index * self.batch_size:]
+        else:
+            x = self.x[index * self.batch_size:(index + 1) * self.batch_size]
+            y = self.y[index * self.batch_size:(index + 1) * self.batch_size]
+
+        x = pad_sequences(x, dtype='object', padding='post',
+                          value=np.zeros(300)).astype(np.float32)
+
+        return x, y

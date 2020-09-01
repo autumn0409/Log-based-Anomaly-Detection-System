@@ -3,16 +3,17 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense, Bidirectional, Masking
 
 from Attention import Attention
+from utils import DataGenerator
 
 
 # hyper-parameters
 batch_size = 64
 epochs = 20
-rnn_units = 32
+rnn_units = 128
 
 
 # load data
-training_data = np.load('preprocessed_data/training_data.npz')
+training_data = np.load('preprocessed_data_2/training_data.npz', allow_pickle=True)
 x_train = training_data['x_train']
 y_train = training_data['y_train']
 del training_data
@@ -20,7 +21,7 @@ del training_data
 
 # model
 model = Sequential()
-model.add(Masking(mask_value=0., input_shape=(None, x_train.shape[2])))
+model.add(Masking(mask_value=0., input_shape=(None, 300)))
 model.add(Bidirectional(LSTM(rnn_units, return_sequences=True)))
 model.add(Attention(bias=False))
 model.add(Dense(2, activation='sigmoid'))
@@ -29,8 +30,9 @@ print(model.summary())
 
 
 # train
-model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
+train_generator = DataGenerator(x_train, y_train, batch_size=batch_size)
+model.fit(train_generator, epochs=epochs)
 
 
 # save model
-model.save('my_model.h5')
+model.save('my_model_2.h5')

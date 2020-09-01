@@ -47,16 +47,12 @@ df_structured.drop(columns=['ParameterList'], axis=1, inplace=True)
 
 
 # split training and testing data labels
-df_label['Usage'] = 'rest'
+df_label['Usage'] = 'testing'
 
 n_index = df_label.Label[df_label.Label.eq('Normal')].sample(6000).index
 a_index = df_label.Label[df_label.Label.eq('Anomaly')].sample(6000).index
 train_index = n_index.union(a_index)
 df_label.iloc[train_index, df_label.columns.get_loc('Usage')] = 'training'
-
-test_index = df_label.Usage[df_label.Usage.eq('rest')].sample(
-    int((len(df_label) - 12000) * 0.25)).index
-df_label.iloc[test_index, df_label.columns.get_loc('Usage')] = 'testing'
 
 df_structured = pd.merge(df_structured, df_label, on='BlockId')
 del df_label
@@ -101,23 +97,10 @@ while len(df_train) > 0:
     pbar.update()
 pbar.close()
 
-# padding
-x = []
-pbar = tqdm(total=len(x_train), desc='padding zeros')
-while len(x_train) > 0:
-    x.append(x_train[0].astype(np.float32))
-    del x_train[0]
 
-    x[-1] = np.vstack((x[-1], np.zeros((max_timesteps -
-                                        x[-1].shape[0], 300), dtype=np.float32)))
-
-    pbar.update()
-pbar.close()
-
-
-np.savez('preprocessed_data/training_data.npz',
-         x_train=x, y_train=y_train)
-del x, y_train
+np.savez('preprocessed_data_2/training_data.npz',
+         x_train=x_train, y_train=y_train)
+del x_train, y_train
 
 
 # testing data preprocessing
@@ -148,19 +131,5 @@ while len(df_test) > 0:
 pbar.close()
 
 
-# padding
-x = []
-pbar = tqdm(total=len(x_test), desc='padding zeros')
-while len(x_test) > 0:
-    x.append(x_test[0].astype(np.float32))
-    del x_test[0]
-
-    x[-1] = np.vstack((x[-1], np.zeros((max_timesteps -
-                                        x[-1].shape[0], 300), dtype=np.float32)))
-
-    pbar.update()
-pbar.close()
-
-
-np.savez('preprocessed_data/testing_data.npz',
-         x_test=x, y_test=y_test)
+np.savez('preprocessed_data_2/testing_data.npz',
+         x_test=x_test, y_test=y_test)
