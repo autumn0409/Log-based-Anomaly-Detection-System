@@ -5,6 +5,7 @@ from nltk.corpus import stopwords
 import numpy as np
 import keras
 from keras.preprocessing.sequence import pad_sequences
+import math
 
 
 EMBEDDING_DIM = 300
@@ -104,22 +105,15 @@ class DataGenerator(keras.utils.Sequence):
         self.x = x
         self.y = y
         self.batch_size = batch_size
-        self.batch_num = self.__len__()
 
     def __len__(self):
         'Denotes the number of batches'
-        return int(np.ceil(len(self.x) / self.batch_size))
+        return math.ceil(len(self.x) / self.batch_size)
 
     def __getitem__(self, index):
         'Generate one batch of data'
-        x = y = None
-
-        if index == (self.batch_num - 1):
-            x = self.x[index * self.batch_size:]
-            y = self.y[index * self.batch_size:]
-        else:
-            x = self.x[index * self.batch_size:(index + 1) * self.batch_size]
-            y = self.y[index * self.batch_size:(index + 1) * self.batch_size]
+        x = self.x[index * self.batch_size:(index + 1) * self.batch_size]
+        y = self.y[index * self.batch_size:(index + 1) * self.batch_size]
 
         x = pad_sequences(x, dtype='object', padding='post',
                           value=np.zeros(300)).astype(np.float32)

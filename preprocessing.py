@@ -98,7 +98,7 @@ while len(df_train) > 0:
 pbar.close()
 
 
-np.savez('preprocessed_data_2/training_data.npz',
+np.savez('preprocessed_data/training_data.npz',
          x_train=x_train, y_train=y_train)
 del x_train, y_train
 
@@ -131,5 +131,5 @@ while len(df_test) > 0:
 pbar.close()
 
 
-np.savez('preprocessed_data_2/testing_data.npz',
+np.savez('preprocessed_data/testing_data.npz',
          x_test=x_test, y_test=y_test)

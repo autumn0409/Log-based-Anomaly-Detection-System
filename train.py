@@ -7,13 +7,14 @@ from utils import DataGenerator
 
 
 # hyper-parameters
-batch_size = 64
-epochs = 20
-rnn_units = 128
+batch_size = 128
+epochs = 80
+rnn_units = 512
 
 
 # load data
-training_data = np.load('preprocessed_data_2/training_data.npz', allow_pickle=True)
+training_data = np.load(
+    'preprocessed_data/training_data.npz', allow_pickle=True)
 x_train = training_data['x_train']
 y_train = training_data['y_train']
 del training_data
@@ -24,7 +25,7 @@ model = Sequential()
 model.add(Masking(mask_value=0., input_shape=(None, 300)))
 model.add(Bidirectional(LSTM(rnn_units, return_sequences=True)))
 model.add(Attention(bias=False))
-model.add(Dense(2, activation='sigmoid'))
+model.add(Dense(2, activation='softmax'))
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['acc'])
 print(model.summary())
 
@@ -35,4 +36,4 @@ model.fit(train_generator, epochs=epochs)
 
 
 # save model
-model.save('my_model_2.h5')
+model.save('my_model.h5')
