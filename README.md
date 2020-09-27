@@ -28,4 +28,4 @@ recall, precision and F1-score achieved by it are 0.9991, 0.9318 and 0.9643, res
 * preprocessing.py
 
 ## Reference
-[Robust Log-Based Anomaly Detection on Unstable Log Data](https://dl.acm.org/doi/pdf/10.1145/3338906.3338931?casa_token=_HjRKtv-ddkAAAAA:LQ-wpe6fmsfye9ivWbRuKX1QFeYLLqzHztmr3pCb9w7yWIgR7B5KNPvj4r4gHMwKD6zAG5W3CHsu)
+[https://dl.acm.org/doi/10.1145/3338906.3338931](https://dl.acm.org/doi/10.1145/3338906.3338931)
