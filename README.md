@@ -20,12 +20,12 @@ recall, precision and F1-score achieved by it are 0.9991, 0.9318 and 0.9643, res
 * testing: rest data
 
 ## Preprocessing Order
-* unzip HDFS_1.tar.gz into log_data/
-* parse_log.py
-* embbedding_table.py
-* IDF.py
-* template2vec.py
-* preprocessing.py
+1. unzip HDFS_1.tar.gz into log_data/
+2. parse_log.py
+3. embbedding_table.py
+4. IDF.py
+5. template2vec.py
+6. preprocessing.py
 
 ## Reference
 * [https://dl.acm.org/doi/10.1145/3338906.3338931](https://dl.acm.org/doi/10.1145/3338906.3338931)
