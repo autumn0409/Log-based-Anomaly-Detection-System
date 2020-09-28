@@ -28,4 +28,6 @@ recall, precision and F1-score achieved by it are 0.9991, 0.9318 and 0.9643, res
 * preprocessing.py
 
 ## Reference
-[https://dl.acm.org/doi/10.1145/3338906.3338931](https://dl.acm.org/doi/10.1145/3338906.3338931)
+* [https://dl.acm.org/doi/10.1145/3338906.3338931](https://dl.acm.org/doi/10.1145/3338906.3338931)
+* [http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf](http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf)
+* [https://arxiv.org/pdf/1612.03651.pdf](https://arxiv.org/pdf/1612.03651.pdf)
