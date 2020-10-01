@@ -8,9 +8,9 @@ from dataloader import DataGenerator
 
 # hyper-parameters
 EMBEDDING_DIM = 768
-batch_size = 128
+batch_size = 32
 epochs = 20
-rnn_units = 512
+rnn_units = 256
 
 
 # load data
