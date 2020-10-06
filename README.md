@@ -12,9 +12,6 @@ recall, precision and F1-score achieved by it are 0.9977, 0.9691 and 0.9832, res
 ## Preprocessing Order
 * unzip HDFS_1.tar.gz into log_data/
 * parse_log.py
-* embbedding_table.py
-* IDF.py
-* template2vec.py
 * preprocessing.py
 
 ## Data Discription
@@ -29,4 +26,4 @@ recall, precision and F1-score achieved by it are 0.9977, 0.9691 and 0.9832, res
 ## Reference
 * [https://dl.acm.org/doi/10.1145/3338906.3338931](https://dl.acm.org/doi/10.1145/3338906.3338931)
 * [http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf](http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf)
-* []()
+* [https://arxiv.org/abs/1908.10084](https://arxiv.org/abs/1908.10084)
