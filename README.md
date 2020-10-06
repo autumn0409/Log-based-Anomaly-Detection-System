@@ -1,9 +1,6 @@
 # Preprocessing Order
 * unzip HDFS_1.tar.gz into log_data/
 * parse_log.py
-* embbedding_table.py
-* IDF.py
-* template2vec.py
 * preprocessing.py
 
 # Data Discription
