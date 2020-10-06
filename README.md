@@ -25,5 +25,5 @@ recall, precision and F1-score achieved by it are 0.9977, 0.9691 and 0.9832, res
 
 ## Reference
 * [https://dl.acm.org/doi/10.1145/3338906.3338931](https://dl.acm.org/doi/10.1145/3338906.3338931)
-* [http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf](http://jiemingzhu.github.io/pub/pjhe_icws2017.pdf)
+* [https://ieeexplore.ieee.org/document/8029742](https://ieeexplore.ieee.org/document/8029742)
 * [https://arxiv.org/abs/1908.10084](https://arxiv.org/abs/1908.10084)
