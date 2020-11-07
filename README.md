@@ -1,9 +1,10 @@
 # Log-based Anomaly Detection System
 The final project of deep learning and practice (summer 2020) in NCTU.
 
-First, we adopt Drain to parse log messages to extract log events (templates).
-Then, we extracts semantic information of log events and represents them as semantic vectors using sentense-bert.
-Finally, we detects anomalies by utilizing an attention-based Bi-LSTM model, which has the ability to capture the contextual
+The main procedures of this system are as follows:
+1. Adopt Drain to parse log messages to extract log events (templates).
+2. Extracts semantic information of log events and represents them as semantic vectors using sentense-bert.
+3. Detects anomalies by utilizing an attention-based Bi-LSTM model, which has the ability to capture the contextual
 information in the log sequences and automatically learn the importance of different log events.
 
 We have evaluated our system using the public HDFS dataset, and the
