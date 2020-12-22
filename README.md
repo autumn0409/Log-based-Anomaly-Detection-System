@@ -3,7 +3,7 @@ The final project of deep learning and practice (summer 2020) in NCTU.
 
 The main procedures of this system are as follows:
 1. Adopt Drain to parse log messages to extract log events (templates).
-2. Extracts semantic information of log events and represents them as semantic vectors using sentense-bert.
+2. Extracts semantic information of log events and represents them as semantic vectors using Sentence-BERT.
 3. Detects anomalies by utilizing an attention-based Bi-LSTM model, which has the ability to capture the contextual
 information in the log sequences and automatically learn the importance of different log events.
 
